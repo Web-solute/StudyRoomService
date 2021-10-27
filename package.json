@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev":""
+    "dev": "nodemon --exec babel-node server",
+    "migrate": "npx prisma migrate dev -- preview-feature",
+    "studio": "npx prisma studio"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,18 @@
   "bugs": {
     "url": "https://github.com/dev-jiseok/StudyRoomService/issues"
   },
-  "homepage": "https://github.com/dev-jiseok/StudyRoomService#readme"
+  "homepage": "https://github.com/dev-jiseok/StudyRoomService#readme",
+  "dependencies": {
+    "@prisma/client": "^3.3.0",
+    "apollo-server": "^3.4.0",
+    "dotenv": "^10.0.0",
+    "graphql": "^15.7.0",
+    "graphql-tools": "^8.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/node": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "nodemon": "^2.0.14"
+  }
 }
