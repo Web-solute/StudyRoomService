@@ -1,0 +1,20 @@
+{
+  "name": "StudyRoomService",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev":""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-jiseok/StudyRoomService.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dev-jiseok/StudyRoomService/issues"
+  },
+  "homepage": "https://github.com/dev-jiseok/StudyRoomService#readme"
+}
