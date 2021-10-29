@@ -9,3 +9,39 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id            Int      @id @default(autoincrement())
+  studentId     Int      @unique
+  name          String
+  major         String
+  campus        Campus
+  isValid       Boolean  @default(false)
+  activateTime  String   @default("")
+  teminatedTime String   @default("")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Reservation {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  date      String
+  start     String
+  finish    String
+  space     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Studyroom {
+  id           Int     @id @default(autoincrement())
+  isReserved   Boolean @default(false)
+  roomNumber   String
+  roomPassword String
+}
+
+enum Campus {
+  Seoul
+  Global
+}
