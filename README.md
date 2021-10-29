@@ -4,21 +4,21 @@ API
 
 ## User:
 
-- [ ] Create Account
+- [ ] Create Account
 
-- [ ] See Profile
+- [ ] See Profile
 
-- [ ] Login
+- [ ] Login
 
-- [ ] Edit Profile
+- [ ] Edit Profile
 
-- [ ] Change Avatar
+- [ ] Change Avatar
 
-- [ ] Follow User
+- [ ] Follow User
 
-- [ ] Unfollow User
+- [ ] Unfollow User
 
-- [ ] See Followers w/ pagination
+- [ ] See Followers w/ pagination
 
 - [ ] See Following w/ pagination
 
