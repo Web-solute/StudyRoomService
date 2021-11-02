@@ -14,9 +14,11 @@ model User {
   id            Int      @id @default(autoincrement())
   studentId     Int      @unique
   name          String
+  password      String
   major         String
   campus        Campus
   isValid       Boolean  @default(false)
+  isManaged     Boolean  @default(false)
   activateTime  String   @default("")
   teminatedTime String   @default("")
   createdAt     DateTime @default(now())
