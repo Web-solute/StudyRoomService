@@ -53,7 +53,7 @@ model Time{
   studyroomId Int  
   description String //각 교시별 정확한 시간 
   isReserved Boolean @default(false)
-}
+} 
 
 
 enum Campus {

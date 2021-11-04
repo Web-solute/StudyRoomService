@@ -1,7 +1,7 @@
 import client from "../../client";
 import { protectedResolver } from "../../User/User.utils";
 
-export default {
+export default { 
     Mutation:{
         createRoom: protectedResolver(
             async (_,args,{loggedInUser}) => {

@@ -2,7 +2,7 @@ import client from "../../client";
 import { protectedResolver } from "../../User/User.utils";
 
 export default {
-    Query: {
+    Query: { 
         seeRooms: protectedResolver(
             async () => client.studyroom.findMany()
         )

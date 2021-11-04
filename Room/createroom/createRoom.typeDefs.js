@@ -3,7 +3,7 @@ import { gql } from "apollo-server";
 export default`
     type createRoomResult{
         ok:Boolean!
-        error:String
+        error:String 
     }
     type Mutation{
         createRoom(

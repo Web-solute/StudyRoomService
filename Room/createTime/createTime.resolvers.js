@@ -1,6 +1,6 @@
 import client from "../../client";
 import { protectedResolver } from "../../User/User.utils";
-
+ 
 export default{
     Mutation:{
         createTime: protectedResolver(
