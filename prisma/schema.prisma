@@ -37,11 +37,24 @@ model Reservation {
 }
 
 model Studyroom {
-  id           Int     @id @default(autoincrement())
-  isReserved   Boolean @default(false)
-  roomNumber   String
+  id Int @id @default(autoincrement())
+  times Time[]
+  description  String
+  roomNumber   Int
   roomPassword String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
+
+model Time{
+  id Int @id @default(autoincrement()) 
+  name String //이름 1교시 , 2교시
+  studyroom Studyroom @relation(fields: [studyroomId], references:[id])
+  studyroomId Int  
+  description String //각 교시별 정확한 시간 
+  isReserved Boolean @default(false)
+}
+
 
 enum Campus {
   Seoul
