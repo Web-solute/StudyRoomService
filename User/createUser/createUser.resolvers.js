@@ -5,18 +5,16 @@ export default {
   Mutation: {
     createUser: async (_, args) => {
       const {
-        name,
         studentId,
+        name,
+        password,
         major,
-        password
+        campus
       } = args;
       try {
         const existingUser = await client.user.findFirst({
           where: {
-            OR: [
-              { studentId },
-              { name }
-            ]
+            studentId
           }
         });
         if (existingUser) {
@@ -27,9 +25,10 @@ export default {
         await client.user.create({
           data: {
             studentId,
-            major,
             name,
-            password: uglyPassword
+            password: uglyPassword,
+            major,
+            campus
           }
         });
 
