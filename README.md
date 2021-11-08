@@ -2,19 +2,19 @@
 
 ## API List
 
-- [ o] createUser// 회원가입 --> JS
-- [o ] login //로그인 --> JS
-- [o ] updateUser --> JH
-- [o ] deleteUser --> SM
+- [v] createUser// 회원가입 --> JS
+- [v] login //로그인 --> JS
+- [v] updateUser --> JH
+- [v] deleteUser --> SM
 - [ ] editProfile ->x
 - [ ] seeProfile ->x
 - [ ] findPassword
 - [ ㅁ] seeUsers// 모든 유저 모아보기 (관리자용)-->정환
-- [o ] createRoom // 방 생성(관리자용) --> JH, SM
+- [v] createRoom // 방 생성(관리자용) --> JH, SM
 - [ ㅁ] updateRoom // 방 수정(관리자용) -->지석
 - [ ㅁ] deleteRoom// 방 삭제 (관리자용)-->지석
 - [ ㅁ] seeRooms // 모든 방 모아보기 -->수민
-- [o ] seeRoom // 남아있는 방들 확인 (각 방에 시간대별 리스트 필요 )
+- [v] seeRoom // 남아있는 방들 확인 (각 방에 시간대별 리스트 필요 )
 - [ ] reserveRoom //방 예약
 - [ ] cancelRoom //예약 취소
 - [ ] changeRoom //예약 변경
