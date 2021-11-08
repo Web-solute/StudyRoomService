@@ -8,7 +8,7 @@ export default gql`
         error: String
     }
     type Mutation{
-        login(studentId:Int!, password:String!):LoginResult!
+        login(studentId:String!, password:String!):LoginResult!
     }
 `;
 
