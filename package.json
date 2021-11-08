@@ -23,7 +23,7 @@
     "@babel/cli": "^7.16.0",
     "@prisma/client": "^3.3.0",
     "apollo-server": "^3.4.0",
-    "apollo-server-express": "^2.22.2",
+    "apollo-server-express": "^2.25.2",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
@@ -39,6 +39,6 @@
     "@babel/node": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
     "nodemon": "^2.0.14",
-    "prisma": "^3.3.0"
+    "prisma": "^3.4.0"
   }
 }

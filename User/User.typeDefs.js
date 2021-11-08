@@ -3,10 +3,10 @@ import { gql } from "apollo-server";
 export default gql`
   type User {
     id: Int!
-    name: String!
     studentId: Int!
-    password: String!
     major: String!
+    name: String!
+    password: String!
     campus: Campus!
     isValid: Boolean!
     isManaged: Boolean!
