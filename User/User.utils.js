@@ -22,6 +22,7 @@ export const protectedResolver =
   (ourResolver) => (root, args, context, info) => {
     if (!context.loggedInUser) {
       const query = info.operation.operation === "query";
+
       if (query) {
         return null;
       } else {

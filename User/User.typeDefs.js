@@ -4,7 +4,7 @@ export default gql`
   type User {
     id: Int!
     name: String!
-    studentId: String!
+    studentId: Int!
     password: String!
     major: String!
     campus: Campus!

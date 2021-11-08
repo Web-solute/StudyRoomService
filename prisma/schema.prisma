@@ -35,12 +35,25 @@ model Reservation {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
+model Class{
+  id           Int     @id @default(autoincrement())
+  name         Int
+  isReserved   Boolean @default(false)
+  time         Time @relation(fields:[timeId],references:[id])
+  timeId       Int 
+}
+model Time{
+  id           Int     @id @default(autoincrement())
+  studyroom     Studyroom?
+  classes       Class[]
+}
 model Studyroom {
   id           Int     @id @default(autoincrement())
-  isReserved   Boolean @default(false)
-  roomNumber   String
-  roomPassword String
+  roomNumber   Int 
+  roomPassword String @default("0000")
+  description  String
+  schedule     Time?  @relation(fields: [timeId],references:[id])
+  timeId       Int?
 }
 
 enum Campus {
