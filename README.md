@@ -5,7 +5,7 @@
 - [v] createUser// 회원가입 --> JS
 - [v] login //로그인 --> JS
 - [v] updateUser --> JH
-- [v] deleteUser --> SM
+- [o] deleteUser --> SM
 - [ ] editProfile ->x
 - [ ] seeProfile ->x
 - [ ] findPassword
