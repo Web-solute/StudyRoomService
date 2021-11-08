@@ -118,7 +118,5 @@ dist
 .pnp.*
 
 
-#package-lock.json
-package-lock.json
 
 prisma/migrations
