@@ -8,7 +8,7 @@ export default gql`
     }
     type Mutation{
         createUser(
-            studentId:Int!
+            studentId:String!
             name:String!
             password:String!
             major:String!
