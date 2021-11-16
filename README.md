@@ -18,6 +18,6 @@
 - [ ] reserveRoom //방 예약
 - [ ] cancelRoom //예약 취소
 - [ ] changeRoom //예약 변경
-- [ ] setRoom // 시간 별 방 비밀번호설정 --> 이 부분은 의논 필요
+- [ ] setRoom // 시간 별 방 비밀번호설정 --> 이 부분은 의논 필요 x
 - [ ] sendMessage // 나갈 떄 시간 알림
 - [ ] validUser (유저가 다른 DB(학교 DB)와 조회해서 존재하면 T 아니면 F)
