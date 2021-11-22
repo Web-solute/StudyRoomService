@@ -13,6 +13,7 @@ export default gql`
             password:String!
             major:String!
             campus: Campus!
+            idCard: Upload!
         ):createUserResult
     }  
 `;
