@@ -6,29 +6,25 @@ export default {
   Query: {
     seeRoom: protectedResolver(async (_, args) => {
       const { select } = args;
-      const lists = await client.class.findMany({
+      const classes = await client.class.findMany({
         where: {
           name: select,
           isReserved: false,
         },
         select: {
-          timeId: true,
+          room: true,
         },
       });
-      const rooms = [];
 
-      if (lists) {
-        lists.map((list) => {
-          const room = client.studyroom.findFirst({
-            where: {
-              timeId: list.timeId,
-            },
-          });
-          rooms.push(room);
-        });
-        return rooms;
+      //const rooms=classes.map(class=>await client.room.findFirst({where:{roomId:class.roomId}}));
+      //console.log(rooms);
+      if (classes) {
+        //console.log(classes.room);
+        return classes;
       } else {
-        return "가능한 방이 없습니다.";
+        return {
+          error: "선택 가능한 방이 없습니다. ",
+        };
       }
     }),
   },

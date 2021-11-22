@@ -20,8 +20,6 @@ model User {
   idCard        String
   isValid       Boolean  @default(false)
   isManaged     Boolean  @default(false)
-  activateTime  String?
-  teminatedTime String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
@@ -30,35 +28,26 @@ model Reservation {
   id        Int      @id @default(autoincrement())
   userId    Int
   date      String
-  start     String
-  finish    String
-  space     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  start     Int //시작하는 교시 
+  finish    Int? //끝나는 교시
+  space     Int //roomNumber
 }
 
-model Class{
-  id           Int     @id @default(autoincrement())
-  name         Int
-  isReserved   Boolean @default(false)
-  time         Time @relation(fields:[timeId],references:[id])
-  timeId       Int 
-}
-
-model Time{
-  id           Int     @id @default(autoincrement())
-  studyroom     Studyroom?
-  classes       Class[]
-}
-
-model Studyroom {
+model Room {
   id           Int     @id @default(autoincrement())
   roomNumber   Int 
   roomPassword String @default("0000")
   description  String
-  schedule     Time?  @relation(fields: [timeId],references:[id])
-  timeId       Int?
+  classes      Class[]
 }
+model Class{
+  id           Int     @id @default(autoincrement())
+  name         Int
+  isReserved   Boolean @default(false)
+  room         Room @relation(fields:[roomId],references:[id])
+  roomId       Int 
+}
+
 
 enum Campus {
   Seoul

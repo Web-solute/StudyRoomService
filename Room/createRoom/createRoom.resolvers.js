@@ -7,7 +7,7 @@ export default {
       const { roomNumber, description, open, closed } = args;
       try {
         if (loggedInUser.isManaged) {
-          const exists = await client.studyroom.findFirst({
+          const exists = await client.room.findFirst({
             where: {
               roomNumber,
             },
@@ -19,7 +19,7 @@ export default {
               error: "이미 데이터가 있습니다.",
             };
           } else {
-            const newRoom = await client.studyroom.create({
+            const newRoom = await client.room.create({
               data: {
                 roomNumber,
                 description,
@@ -27,22 +27,15 @@ export default {
                 closed,
               },
             });
-            const newSchedule = await client.time.create({
-              data: {
-                studyroom: {
-                  connect: {
-                    id: newRoom.id,
-                  },
-                },
-              },
-            });
+
             for (var i = 1; i <= 8; i++) {
               await client.class.create({
                 data: {
                   name: i,
-                  time: {
+
+                  room: {
                     connect: {
-                      id: newSchedule.id,
+                      id: newRoom.id,
                     },
                   },
                 },
