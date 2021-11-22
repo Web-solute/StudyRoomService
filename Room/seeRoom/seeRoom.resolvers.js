@@ -17,19 +17,15 @@ export default {
       });
       const rooms = [];
 
-      if (lists) {
-        lists.map((list) => {
-          const room = client.studyroom.findFirst({
-            where: {
-              timeId: list.timeId,
-            },
-          });
-          rooms.push(room);
+      lists.map((list) => {
+        const room = client.studyroom.findFirst({
+          where: {
+            timeId: list.timeId,
+          },
         });
-        return rooms;
-      } else {
-        return "가능한 방이 없습니다.";
-      }
+        rooms.push(room);
+      });
+      return rooms;
     }),
   },
 };

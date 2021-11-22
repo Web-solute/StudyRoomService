@@ -2,6 +2,6 @@ import { gql } from "apollo-server-express";
 
 export default gql`
   type Query {
-    seeRoom(select: Int!): [Studyroom]
+    seeRoom(select: Int!): [Studyroom]!
   }
 `;
