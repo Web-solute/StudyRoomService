@@ -8,6 +8,7 @@ export default gql`
     name: String!
     password: String!
     campus: Campus!
+    idCard: String!
     isValid: Boolean!
     isManaged: Boolean!
     activateTime: String!

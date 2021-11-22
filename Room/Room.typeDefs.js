@@ -1,23 +1,26 @@
 import { gql } from "apollo-server";
 
 export default gql`
-  type Studyroom {
+  type Room {
     id: Int!
     roomNumber: Int!
+    roomPassword: String!
     description: String!
-    schedule: Time!
-    timeId: Int!
+    classes: Class!
   }
   type Class {
     id: Int!
     name: Int!
     isReserved: Boolean!
-    time: Time!
-    timeId: Int!
+    room: Room!
+    roomId: Int!
   }
-  type Time {
-    is: Int!
-    studyroom: Studyroom!
-    classes: [Class]
+  type Reservation {
+    id: Int!
+    userId: Int!
+    date: String
+    start: Int
+    finish: Int
+    space: Int
   }
 `;
