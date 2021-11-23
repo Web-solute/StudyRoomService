@@ -8,11 +8,12 @@ export default gql`
   type Mutation {
     createUser(
       studentId: String!
+      major: String!
       name: String!
       password: String!
-      major: String!
       campus: Campus!
-      idCard: Upload!
+      idCard: Upload
+      email: String!
     ): createUserResult
   }
 `;

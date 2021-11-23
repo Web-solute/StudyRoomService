@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 export default {
   Mutation: {
     createUser: async (_, args) => {
-      const { studentId, name, password, major, campus } = args;
+      const { studentId, name, password, major, campus, idCard, email } = args;
       try {
         const existingUser = await client.user.findFirst({
           where: {
@@ -23,6 +23,8 @@ export default {
             password: uglyPassword,
             major,
             campus,
+            idCard:"test",
+            email
           },
         });
 
