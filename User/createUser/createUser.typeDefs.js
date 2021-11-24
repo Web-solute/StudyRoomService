@@ -10,9 +10,9 @@ export default gql`
       studentId: String!
       name: String!
       password: String!
-      major: String!
+      major: Major!
       campus: Campus!
-      idCard: Upload!
+      idCard: Upload
     ): createUserResult
   }
 `;

@@ -7,6 +7,11 @@ export default gql`
   }
 
   type Mutation {
-    reserveRoom(roomNumber: Int!, start: Int, end: Int): reserveRoomResult!
+    reserveRoom(
+      roomNumber: Int!
+      _start: Int
+      _finish: Int
+      mem: [String]
+    ): reserveRoomResult!
   }
 `;

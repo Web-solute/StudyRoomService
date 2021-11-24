@@ -4,15 +4,13 @@ export default gql`
   type User {
     id: Int!
     studentId: String!
-    major: String!
+    major: Major!
     name: String!
     password: String!
     campus: Campus!
-    idCard: String!
+    idCard: String
     isValid: Boolean!
     isManaged: Boolean!
-    activateTime: String!
-    terminatedTIme: String!
     createdAt: String!
     updatedAt: String!
   }
@@ -20,5 +18,10 @@ export default gql`
   enum Campus {
     Seoul
     Global
+  }
+
+  enum Major {
+    Computer
+    Information_Communication
   }
 `;
