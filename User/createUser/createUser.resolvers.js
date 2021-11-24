@@ -18,18 +18,28 @@ export default {
       try {
         const existingUser = await client.user.findFirst({
           where: {
-            studentId
+            OR:[
+              {studentId},
+              {email}
+            ]
           }
         });
         if (existingUser) {
           return {
             ok: false,
-            error: "이미 존재하는 사용자입니다."
+            error: "이미 존재하는 사용자 혹은 이메일입니다."
           }
         }
         else {
           let idCardUrl = null;
           idCardUrl = await uploadPhotos(idCard, studentId, "User");
+
+          if(idCardUrl === null){
+            return {
+              ok:false,
+              error:"학생증 사진을 넣어주세요!"
+            }
+          }
 
           const uglyPassword = await bcrypt.hash(password, 10);
 

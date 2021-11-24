@@ -12,7 +12,7 @@ export default gql`
       name: String!
       password: String!
       campus: Campus!
-      idCard: Upload
+      idCard: Upload!
       email: String!
     ): createUserResult
   }

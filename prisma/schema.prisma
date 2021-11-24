@@ -17,7 +17,7 @@ model User {
   password      String
   major         String
   email         String   @unique
-  campus        Campus
+  campus        Campus   
   idCard        String
   isValid       Boolean  @default(false)
   isManaged     Boolean  @default(false)
