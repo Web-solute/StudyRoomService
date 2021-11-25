@@ -12,12 +12,14 @@ datasource db {
 
 model User {
   id            Int      @id @default(autoincrement())
-  studentId     String     @unique
+  studentId     String   @unique
   name          String
   password      String
-  major         Major
-  campus        Campus
-  idCard        String?
+
+  major         String
+  email         String   @unique
+  campus        Campus   
+  idCard        String
   isValid       Boolean  @default(false)
   isManaged     Boolean  @default(false)
   createdAt     DateTime @default(now())
