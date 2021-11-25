@@ -4,42 +4,195 @@ import { protectedResolver } from "../../User/User.utils";
 export default {
   Mutation: {
     reserveRoom: protectedResolver(async (_, args, { loggedInUser }) => {
-      const { roomNumber, start, end } = args;
+      const { roomNumber, _start, _finish, mem } = args;
       if (!loggedInUser.isValid) {
         return {
           ok: false,
           error: "방을 예약할 수 있는 권한이 없습니다. ",
         };
       }
-      if (loggedInUser.activateTime != "") {
+
+      if (mem) {
+        if (mem.length > 4) {
+          //예역자 포함 최대 5명
+          return {
+            ok: false,
+            error: "예약자 포함 최대 5명까지 예약 가능합니다. ",
+          };
+        }
+
+        for (var i = 0; i < mem.length; i++) {
+          //동반자 예약 가능 여부 확인
+          const valid = await client.user.findFirst({
+            where: {
+              studentId: mem[i],
+            },
+          });
+
+          if (!valid || !valid.isValid) {
+            return {
+              ok: false,
+              error:
+                "학생" +
+                mem[i] +
+                " 은(는) 방을 예약할 수 있는 권한이 없습니다. ",
+            };
+          }
+        }
+      }
+
+      /*
+      mem.map(async (student) => {
+        const valid = await client.user.findFirst({
+          where: {
+            studentId: student,
+          },
+        });
+
+        if (!valid || !valid.isValid) {
+          return {
+            ok: false,
+            error:
+              "학생" +
+              student +
+              " 은(는) 방을 예약할 수 있는 권한이 없습니다. ",
+          };
+        }
+      });
+
+      mem.forEach(async function (student) {
+        const valid = await client.user.findFirst({
+          where: {
+            studentId: student,
+          },
+        });
+
+        if (!valid || !valid.isValid) {
+          return {
+            ok: false,
+            error:
+              "학생" +
+              student +
+              " 은(는) 방을 예약할 수 있는 권한이 없습니다. ",
+          };
+        }
+      });*/
+      const useralready = await client.reservation.findMany({
+        where: {
+          OR: [
+            {
+              start: _start,
+            },
+            {
+              start: _finish,
+            },
+            {
+              finish: _start,
+            },
+            {
+              finish: _finish,
+            },
+          ],
+          AND: {
+            OR: [
+              {
+                userId: loggedInUser.id,
+              },
+              {
+                group: {
+                  some: {
+                    id: loggedInUser.id,
+                  },
+                },
+              },
+            ],
+          },
+        },
+      });
+
+      if (useralready.length > 0) {
         return {
           ok: false,
-          error: "이미 다른 방을 예약하신 상태입니다.",
+          error: "이미 중복되는 시간대에 다른 방을 예약하신 상태입니다.",
         };
-      } //reservation에서 userId가 연동되어있는지 로 변경
-      //이미예약된 시간대에 예약 불가 동반자 포함
-      //+1 이후(한시간 이후로 예약 가능 ) 다음 start와 현재 finish가 동일하면 안됨
-      //과 부분
-      //컴퓨터공학과, 정보통신공학과
-      //major enum 만들기
+      }
+
+      if (mem) {
+        for (var i = 0; i < mem.length; i++) {
+          const member = await client.user.findFirst({
+            where: {
+              studentId: mem[i],
+            },
+          });
+          console.log(member);
+          const memberalready = await client.reservation.findMany({
+            where: {
+              OR: [
+                {
+                  start: _start,
+                },
+                {
+                  start: _finish,
+                },
+                {
+                  finish: _start,
+                },
+                {
+                  finish: _finish,
+                },
+              ],
+              AND: {
+                OR: [
+                  {
+                    userId: member.id,
+                  },
+                  {
+                    group: {
+                      some: {
+                        id: member.id,
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          });
+          if (memberalready.length > 0) {
+            return {
+              ok: false,
+              error:
+                "학생 " +
+                mem[i] +
+                " 은(는) 이미 중복되는 시간대에 다른 방을 예약하신 상태입니다.",
+            };
+          }
+        }
+      }
 
       const roomstart = await client.class.findFirst({
         where: {
-          name: start,
+          name: _start,
           room: {
             roomNumber,
           },
         },
       });
-      if (end) {
-        const roomend = await client.class.findFirst({
+      var roomend;
+      if (_finish) {
+        roomend = await client.class.findFirst({
           where: {
-            name: end,
+            name: _finish,
             room: {
               roomNumber,
             },
           },
         });
+      }
+      if (!roomstart) {
+        return {
+          ok: false,
+          error: "존재하지 않는 방입니다.",
+        };
       }
       if (roomstart.isReserved == false) {
         await client.class.update({
@@ -50,7 +203,7 @@ export default {
             isReserved: true,
           },
         });
-        if (end) {
+        if (_finish) {
           if (roomend.isReserved == false) {
             await client.class.update({
               where: {
@@ -63,26 +216,59 @@ export default {
           } else {
             return {
               ok: false,
-              error: "예약할 수 없는 방입니다. 1",
+              error: "예약할 수 없는 방입니다.",
             };
           }
         }
       } else {
         return {
           ok: false,
-          error: "예약할 수 없는 방입니다. 2a",
+          error: "예약할 수 없는 방입니다.",
         };
       }
 
-      await client.reservation.create({
+      const reserve = await client.reservation.create({
         data: {
-          userId: loggedInUser.id,
           date: Date(),
-          start,
-          ...(end && { finish: end }),
+          start: _start,
+          ...(_finish && { finish: _finish }),
           space: roomstart.roomId,
+          user: {
+            connect: {
+              id: loggedInUser.id,
+            },
+          },
         },
       });
+
+      if (reserve && mem) {
+        /*
+        mem.forEach(async function (student) {
+          await client.user.update({
+            where: { studentId: student },
+            data: {
+              member: {
+                connect: {
+                  id: reserve.id,
+                },
+              },
+            },
+          });
+        }); */
+
+        for (var i = 0; i < mem.length; i++) {
+          await client.user.update({
+            where: { studentId: mem[i] },
+            data: {
+              member: {
+                connect: {
+                  id: reserve.id,
+                },
+              },
+            },
+          });
+        }
+      }
       //user actiavate time 부분 추가해야함
       return {
         ok: true,

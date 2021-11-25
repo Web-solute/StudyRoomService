@@ -22,5 +22,22 @@ export default gql`
     start: Int
     finish: Int
     space: Int
+    user: User!
+    group: User!
+  }
+  type User {
+    id: Int!
+    studentId: String!
+    major: Major!
+    name: String!
+    password: String!
+    campus: Campus!
+    idCard: String
+    isValid: Boolean!
+    isManaged: Boolean!
+    createdAt: String!
+    updatedAt: String!
+    reservations: Reservation!
+    member: Reservation!
   }
 `;
