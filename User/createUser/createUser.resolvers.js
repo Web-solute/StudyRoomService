@@ -51,7 +51,7 @@ export default {
               major,
               campus,
               email,
-              // ...(idCardUrl && { idCard: idCardUrl })
+              ...(idCardUrl && { idCard: idCardUrl })
             }
           });
 
