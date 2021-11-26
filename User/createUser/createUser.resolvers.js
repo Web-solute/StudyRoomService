@@ -18,9 +18,9 @@ export default {
       try {
         const existingUser = await client.user.findFirst({
           where: {
-            OR:[
-              {studentId},
-              {email}
+            OR: [
+              { studentId },
+              { email }
             ]
           }
         });
@@ -34,10 +34,10 @@ export default {
           let idCardUrl = null;
           idCardUrl = await uploadPhotos(idCard, studentId, "User");
 
-          if(idCardUrl === null){
+          if (idCardUrl === null) {
             return {
-              ok:false,
-              error:"학생증 사진을 넣어주세요!"
+              ok: false,
+              error: "학생증 사진을 넣어주세요!"
             }
           }
 
@@ -51,7 +51,7 @@ export default {
               major,
               campus,
               email,
-              ...(idCardUrl && { idCard: idCardUrl })
+              // ...(idCardUrl && { idCard: idCardUrl })
             }
           });
 
@@ -66,7 +66,8 @@ export default {
             }
           }
         }
-      } catch (e) {
+      }
+      catch (e) {
         return e;
       }
     }

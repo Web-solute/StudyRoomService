@@ -7,9 +7,9 @@ export default {
       const { roomNumber, description, open, closed } = args;
       if (loggedInUser.isManaged) {
 
-        const updatedRoom = await client.studyroom.update({
+        const updatedRoom = await client.room.update({
           where: {
-            id: Studyroom.id,
+            id: Room.id,
           },
           data: {
             roomNumber,

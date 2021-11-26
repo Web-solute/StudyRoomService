@@ -6,19 +6,19 @@ export default {
     deleteRoom: protectedResolver(async (_, args, { loggedInUser }) => {
       const { roomNumber } = args;
       if (loggedInUser.isManaged) {
-        const studyroom = await client.studyroom.findUnique({
+        const room = await client.room.findUnique({
           where: {
             roomNumber
           },
         });
-        if (!studyroom) {
+        if (!room) {
           return {
             ok: false,
             error: "방을 찾을 수 없습니다."
           }
         }
         else {
-          await client.studyroom.delete({
+          await client.room.delete({
             where: {
               roomNumber
             }
