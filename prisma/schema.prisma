@@ -16,7 +16,7 @@ model User {
   name      String
   password  String
   idCard    String
-  major     String
+  major     Major
   email     String @unique
   campus    Campus
 
@@ -47,6 +47,7 @@ model Room {
   roomNumber   Int
   roomPassword String?
   description  String
+  major        Major
   classes      Class[]
 }
 
