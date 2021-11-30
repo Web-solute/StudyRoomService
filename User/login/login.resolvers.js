@@ -24,6 +24,12 @@ export default {
           error: "비밀번호가 틀렸습니다!",
         };
       }
+      if(existUser.isValid === false){
+        return {
+          ok: false,
+          error: "인증이 완료되지 않았습니다."
+        }
+      }
       const token = await jwt.sign(
         { id: existUser.id },
         process.env.SECRET_KEY
@@ -33,6 +39,11 @@ export default {
           ok: true,
           token,
         };
+      }else {
+        return {
+          ok:false,
+          error:"다시 로그인해주세요!"
+        }
       }
     },
   },
