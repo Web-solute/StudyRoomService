@@ -11,7 +11,21 @@ export default {
           error: "방을 예약할 수 있는 권한이 없습니다. ",
         };
       }
-
+      const reserveroom = await client.room.findFirst({
+        where: { roomNumber },
+      });
+      if (!reserveroom) {
+        return {
+          ok: false,
+          error: "존재하지 않는 방입니다.",
+        };
+      }
+      if (loggedInUser.major != reserveroom.major) {
+        return {
+          ok: false,
+          error: loggedInUser.major + " 학과는 예약할 수 없는 방입니다.",
+        };
+      }
       if (mem) {
         if (mem.length > 4) {
           //예역자 포함 최대 5명
@@ -124,7 +138,7 @@ export default {
               studentId: mem[i],
             },
           });
-          console.log(member);
+
           const memberalready = await client.reservation.findMany({
             where: {
               OR: [

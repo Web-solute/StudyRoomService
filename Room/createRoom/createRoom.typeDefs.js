@@ -10,6 +10,7 @@ export default gql`
     createRoom(
       roomNumber: Int!
       description: String
+      major: Major!
       open: String
       closed: String
     ): createRoomResult!

@@ -4,7 +4,7 @@ import { protectedResolver } from "../../User/User.utils";
 export default {
   Mutation: {
     createRoom: protectedResolver(async (_, args, { loggedInUser }) => {
-      const { roomNumber, description, open, closed } = args;
+      const { roomNumber, description, major, open, closed } = args;
       try {
         if (loggedInUser.isManaged) {
           const exists = await client.room.findFirst({
@@ -23,6 +23,7 @@ export default {
               data: {
                 roomNumber,
                 description,
+                major,
                 open,
                 closed,
               },

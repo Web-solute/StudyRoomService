@@ -6,6 +6,6 @@ export default gql`
     error: String
   }
   type Mutation {
-    updateUser(name: String, password: String, major: String): updateUserResult!
+    updateUser(name: String, password: String, major: Major): updateUserResult!
   }
 `;

@@ -4,9 +4,8 @@ import { protectedResolver } from "../../User/User.utils";
 export default {
   Mutation: {
     updateRoom: protectedResolver(async (_, args, { loggedInUser }) => {
-      const { roomNumber, description, open, closed } = args;
+      const { roomNumber, description, major, open, closed } = args;
       if (loggedInUser.isManaged) {
-
         const updatedRoom = await client.room.update({
           where: {
             id: Room.id,
@@ -14,6 +13,7 @@ export default {
           data: {
             roomNumber,
             description,
+            major,
             open,
             closed,
           },

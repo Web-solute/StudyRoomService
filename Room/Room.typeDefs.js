@@ -5,6 +5,7 @@ export default gql`
     id: Int!
     roomNumber: Int!
     roomPassword: String!
+    major: Major!
     description: String!
     classes: Class!
   }
@@ -31,7 +32,7 @@ export default gql`
     major: Major!
     name: String!
     password: String!
-    campus: Campus!
+
     idCard: String
     isValid: Boolean!
     isManaged: Boolean!
@@ -39,5 +40,10 @@ export default gql`
     updatedAt: String!
     reservations: Reservation!
     member: Reservation!
+  }
+
+  enum Major {
+    Computer
+    Information_Communication
   }
 `;

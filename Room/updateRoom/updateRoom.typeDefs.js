@@ -6,6 +6,12 @@ export default gql`
     error: String
   }
   type Mutation {
-    updateRoom(roomNumber:Int, description:String,open: String, closed: String): updateRoomResult!
+    updateRoom(
+      roomNumber: Int
+      description: String
+      major: Major
+      open: String
+      closed: String
+    ): updateRoomResult!
   }
 `;
