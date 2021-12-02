@@ -3,7 +3,7 @@ import {protectedResolver} from "../User.utils"
 
 export default {
     Mutation:{
-        removeUser: protectedResolver(async(_, {studentId}, {loggedInUser}) => {
+        removeUser: protectedResolver(async(_, {id}, {loggedInUser}) => {
             if(!loggedInUser.id){
                 return {
                     ok:false,
@@ -18,13 +18,13 @@ export default {
             }
             const user = await client.user.findUnique({
                 where:{
-                    studentId
+                    id  
                 }
             });
             if(user){
                 await client.user.delete({
                     where:{
-                        studentId
+                        id
                     }
                 });
                 return {
