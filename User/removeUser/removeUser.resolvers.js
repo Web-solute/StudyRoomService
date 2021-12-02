@@ -1,9 +1,21 @@
 import client from "../../client"
+import {protectedResolver} from "../User.utils"
 
 export default {
     Mutation:{
-        removeUser:async(_, {studentId}) => {
-            //매니저 권한으로 변경해두기 + protectedResolver 추가
+        removeUser: protectedResolver(async(_, {studentId}, {loggedInUser}) => {
+            if(!loggedInUser.id){
+                return {
+                    ok:false,
+                    error:"로그인이 필요합니다"
+                }
+            }
+            if(!loggedInUser.isManaged){
+                return {
+                    ok:false,
+                    error:"매니저 권한이 필요합니다"
+                }
+            }
             const user = await client.user.findUnique({
                 where:{
                     studentId
@@ -25,6 +37,6 @@ export default {
                 }
             }
 
-        }
+        })
     }
 }
