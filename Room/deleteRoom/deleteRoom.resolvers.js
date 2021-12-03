@@ -4,11 +4,11 @@ import { protectedResolver } from "../../User/User.utils";
 export default {
   Mutation: {
     deleteRoom: protectedResolver(async (_, args, { loggedInUser }) => {
-      const { roomNumber } = args;
+      const { id } = args;
       if (loggedInUser.isManaged) {
         const room = await client.room.findUnique({
           where: {
-            roomNumber
+            id
           },
         });
         if (!room) {
