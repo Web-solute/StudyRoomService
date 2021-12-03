@@ -6,6 +6,6 @@ export default gql`
         error:String
     }
     type Mutation {
-        deleteRoom(roomNumber:Int!):DeleteRoomResult!
+        deleteRoom(id:Int!):DeleteRoomResult!
     }
 `;
