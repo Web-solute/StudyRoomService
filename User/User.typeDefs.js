@@ -12,6 +12,8 @@ export default gql`
     email: String!
     isValid: Boolean!
     isManaged: Boolean!
+    reservations: [Reservation]
+    member: [Reservation]
     createdAt: String!
     updatedAt: String!
   }

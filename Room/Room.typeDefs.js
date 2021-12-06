@@ -1,49 +1,39 @@
 import { gql } from "apollo-server";
 
 export default gql`
+  type Reservation {
+    id: Int!
+    user: User!
+    date: String!
+    start: Int!
+    finish: Int!
+    room: Room
+    group: [User]
+    createdAt: String!
+    updatedAt: String!
+  }
+
   type Room {
     id: Int!
     roomNumber: Int!
-    roomPassword: String!
+    roomPassword: String
     major: Major!
     description: String!
-    classes: Class!
+    open: String
+    closed: String
+    reservation: [Reservation]
+    classes: [Class]
+    createdAt: String!
+    updatedAt: String!
   }
+
   type Class {
     id: Int!
     name: Int!
     isReserved: Boolean!
-    room: Room!
-    roomId: Int!
-  }
-  type Reservation {
-    id: Int!
-    userId: Int!
-    date: String
-    start: Int
-    finish: Int
-    space: Int
-    user: User!
-    group: User!
-  }
-  type User {
-    id: Int!
-    studentId: String!
-    major: Major!
-    name: String!
-    password: String!
-
-    idCard: String
-    isValid: Boolean!
-    isManaged: Boolean!
+    room: Room
     createdAt: String!
     updatedAt: String!
-    reservations: Reservation!
-    member: Reservation!
   }
 
-  enum Major {
-    Computer
-    Information_Communication
-  }
 `;
