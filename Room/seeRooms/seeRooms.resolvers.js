@@ -4,8 +4,11 @@ import { protectedResolver } from "../../User/User.utils";
 
 export default {
   Query: {
-    seeRooms: protectedResolver(async (_) => {
-      return await client.room.findMany();
+    seeRooms: protectedResolver(async (_,__,{loggedInUser}) => {
+      if(!loggedInUser.id){
+        return null;
+      }
+      return await client.room.findMany({orderBy:{createdAt:'asc'}});
     }),
   },
 };

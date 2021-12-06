@@ -4,7 +4,7 @@ import { protectedResolver } from "../../User/User.utils";
 
 export default {
   Query: {
-    seeRoom: protectedResolver(async (_, args) => {
+    seeRoom: protectedResolver(async (_, args,{loggedInUser}) => {
       const { select } = args;
       const classes = await client.class.findMany({
         where: {

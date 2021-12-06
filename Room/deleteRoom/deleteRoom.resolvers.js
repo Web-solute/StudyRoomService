@@ -20,7 +20,7 @@ export default {
         else {
           await client.room.delete({
             where: {
-              roomNumber
+              id
             }
           });
           return {
