@@ -19,13 +19,12 @@ model User {
   major     Major
   email     String @unique
   campus    Campus
-
   isValid      Boolean       @default(false)
   isManaged    Boolean       @default(false)
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
   reservations Reservation[]
   member       Reservation[] @relation(name: "reservation") //동반자인 경우 예약
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 //member와 group M:N 관계
@@ -33,13 +32,16 @@ model User {
 
 model Reservation {
   id     Int    @id @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id]) //예약자
   userId Int
   date   String
   start  Int //시작하는 교시 
-  finish Int? //끝나는 교시
-  space  Int //roomNumber
-  user   User   @relation(fields: [userId], references: [id]) //예약자
+  finish Int //끝나는 교시
+  room  Room @relation(fields: [roomId], references:[id], onDelete:Cascade) //roomNumber
+  roomId Int
   group  User[] @relation(name: "reservation") //동반자 group
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 model Room {
@@ -47,16 +49,23 @@ model Room {
   roomNumber   Int
   roomPassword String?
   description  String
+  open         String?
+  closed       String?
   major        Major
+  reservation  Reservation[]
   classes      Class[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 model Class {
   id         Int     @id @default(autoincrement())
   name       Int
   isReserved Boolean @default(false)
-  room       Room    @relation(fields: [roomId], references: [id])
+  room       Room    @relation(fields: [roomId], references: [id], onDelete:Cascade)
   roomId     Int
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 enum Campus {
