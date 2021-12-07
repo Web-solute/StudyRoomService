@@ -52,6 +52,13 @@ export default {
                 " 은(는) 방을 예약할 수 있는 권한이 없습니다. ",
             };
           }
+          if (valid.major != reserveroom.major) {
+            return {
+              ok: false,
+              error:
+                mem[i] + " 학생은 학과가 다르므로 예약할 수 없는 방입니다.",
+            };
+          }
         }
       }
 
@@ -240,16 +247,25 @@ export default {
           error: "예약할 수 없는 방입니다.",
         };
       }
-
+      var finish;
+      if (_finish) {
+        finish = _finish;
+      } else {
+        finish = _start;
+      } //한시간 예약한다면 finish도 start로 설정
       const reserve = await client.reservation.create({
         data: {
           date: Date(),
           start: _start,
-          ...(_finish && { finish: _finish }),
-          space: roomstart.roomId,
+          finish,
           user: {
             connect: {
               id: loggedInUser.id,
+            },
+          },
+          room: {
+            connect: {
+              id: reserveroom.id,
             },
           },
         },
