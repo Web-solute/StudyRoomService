@@ -4,36 +4,40 @@ import { protectedResolver } from "../../User/User.utils";
 export default {
   Mutation: {
     updateRoom: protectedResolver(async (_, args, { loggedInUser }) => {
-      const { roomNumber, description, major, open, closed } = args;
-      if (loggedInUser.isManaged) {
-        const updatedRoom = await client.room.update({
-          where: {
-            id: Room.id,
+      const { id, roomNumber, description, major, open, closed } = args;
+      try{
+        if(!loggedInUser.isManaged){
+          return{
+            ok:false,
+            error:"권한이 없습니다!"
+          }
+        }
+        const updateRoom = await client.room.update({
+          where:{
+            id
           },
-          data: {
+          data:{
             roomNumber,
             description,
             major,
             open,
-            closed,
-          },
+            closed
+          }
         });
-
-        if (updatedRoom.id) {
-          return {
-            ok: true,
-          };
-        } else {
-          return {
-            ok: false,
-            error: "업데이트 실패",
-          };
+        if(!updateRoom.id){
+          return{
+            ok:false,
+            error:"다시 시도해주세요"
+          }
         }
-      } else {
         return {
-          ok: false,
-          error: "권한 없음",
-        };
+          ok:true
+        }
+      }catch(e){
+        return {
+          ok:false,
+          error:e.message()
+        }
       }
     }),
   },

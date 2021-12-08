@@ -7,6 +7,7 @@ export default gql`
   }
   type Mutation {
     updateRoom(
+      id:Int!
       roomNumber: Int
       description: String
       major: Major
