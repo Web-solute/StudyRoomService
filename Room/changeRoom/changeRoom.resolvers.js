@@ -79,6 +79,9 @@ export default {
             const reserveroom = await client.room.findFirst({
               where: { roomNumber },
             });
+            const changedroom = await client.room.findFirst({
+              where:{ roomNumber:changeRoomNumber },
+            });
 
             if (!reserveroom) {
               return {
@@ -87,12 +90,20 @@ export default {
               };
             }
             
+            if (!changedroom) {
+              return {
+                ok: false,
+                error: "예약 변경하고자 하는 방이 존재하지 않습니다.",
+              };
+            }
+
+
             if (loggedInUser.major != reserveroom.major) {
               return {
                 ok: false,
                 error: loggedInUser.major + " 학과는 예약할 수 없는 방입니다.",
               };
-            } // 이거 멤버 전공도 확인 해야함
+            } 
             
             if (mem) {
               if (mem.length > 4) {
@@ -123,7 +134,7 @@ export default {
                   };
                 }
 
-                if(mem.major != reserveroom.major){//추가한 부분
+                if(mem.major != reserveroom.major){
                   return{
                     ok: false,
                     error:"학생"+mem[i]+"의 학과가 해당 스터디룸의 학과와 달라 예약할 수 없습니다."
@@ -252,34 +263,53 @@ export default {
         };
       }
 
+      const findsome = await client.reservation.findFirst({ // 예약 존재하는거 찾음
+        where:{
+          userId:loggedInUser.id
+        },
+      })
+      if(findsome){
+        ok: true;
+      }
+      else{
+        ok:false;
+        error:"예약이 없습니다!.."
+      }
       
+      
+      const event = Date();
+
 
       const changeReserve = await client.reservation.update({   // 기존에 있던 예약 변경
         where: {
-          userId: loggedInUser.id,
+          id:findsome.id
         },
         data: {
-          date: "123",
+          date: event.toString(), // 형변환 
           start: _changestart,
           ...(_changefinish && { finish: _changefinish }),
-          
-          user: {
-            connect: {
-              id: loggedInUser.id,
-            },
-            //그룹 부분에 있는 user도 바꿔야함
+          room:{ // 방을 예약 변경하고자 하는 방으로 변경
+            connect:{
+              id:changedroom.id 
+            }
           },
+          /*
+          group:{
+            mem // 그룹원들 다 추가해야함
+          }
+          */
+         
         },
       });
 
-      if (changeReserve && mem) { // 동반자도 있고 예약 변경도 됐으면
+      if (changeReserve && mem) { // 동반자도 있고 예약 변경도 됐으면 user에 멤버추가
         for (var i = 0; i < mem.length; i++) {
           await client.user.update({
             where: { studentId: mem[i] },
             data: {
               member: {
                 connect: {
-                  id: reserve.id,
+                  id: changeReserve.id,
                 },
               },
             },
