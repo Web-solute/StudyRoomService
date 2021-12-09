@@ -3,7 +3,7 @@ import { protectedResolver } from "../../User/User.utils";
 
 export default {
   Mutation: {
-    cancleRoom: protectedResolver(async (_, args, { loggedInUser }) => {
+    cancelRoom: protectedResolver(async (_, args, { loggedInUser }) => {
       const { roomNumber, _start, _finish } = args;
 
       if (!loggedInUser.isValid) {

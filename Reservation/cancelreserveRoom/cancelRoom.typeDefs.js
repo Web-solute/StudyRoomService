@@ -1,13 +1,13 @@
 import { gql } from "apollo-server";
 
 export default gql`
-  type cancleRoomResult {
+  type cancelRoomResult {
     ok: Boolean!
     error: String
   }
 
   type Mutation {
-    cancleRoom(
+    cancelRoom(
       roomNumber: Int!
       _start: Int
       _finish: Int
