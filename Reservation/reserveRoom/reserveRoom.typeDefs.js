@@ -8,9 +8,10 @@ export default gql`
 
   type Mutation {
     reserveRoom(
+      major: Major!
       roomNumber: Int!
-      _start: Int
-      _finish: Int
+      start: Int
+      finish: Int
       mem: [String]
     ): reserveRoomResult!
   }

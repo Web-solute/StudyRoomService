@@ -9,7 +9,7 @@ export default gql`
   type Mutation {
     createRoom(
       roomNumber: Int!
-      description: String
+      description: String!
       major: Major!
       open: String
       closed: String

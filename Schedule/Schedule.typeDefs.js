@@ -1,15 +1,16 @@
 import { gql } from "apollo-server";
 
 export default gql`
-  type Room {
+  type Schedule {
     id: Int!
-    major: Major!
-    roomNumber: Int!
-    description: String!
-    open: String
-    closed: String
+    year: String!
+    month: String!
+    date: String!
+    start: String!
+    finish: String!
+    isReserved: Boolean!
+    room: [Room]
     reservation: Reservation
-    schedules: [Schedule]
     createdAt: String!
     updatedAt: String!
   }
