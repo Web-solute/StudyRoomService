@@ -10,7 +10,7 @@ export default gql`
     finish: String!
     isReserved: Boolean!
     room: [Room]
-    reservation: Reservation
+    reservation: [Reservation]
     createdAt: String!
     updatedAt: String!
   }

@@ -36,6 +36,8 @@ export const protectedResolver =
   };
 
 
+
+
 export const generateSecret = () => {
     const randomPassword = Math.random().toString(36).substr(2,11);
     return randomPassword;

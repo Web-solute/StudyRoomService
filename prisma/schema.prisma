@@ -66,8 +66,7 @@ model Schedule {
   finish     String
   isReserved Boolean @default(false)
   rooms      Room[]
-  reservation Reservation @relation(fields: [reservationId], references:[id])
-  reservationId Int
+  reservation Reservation[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
