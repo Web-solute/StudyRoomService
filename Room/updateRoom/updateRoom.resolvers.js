@@ -36,7 +36,7 @@ export default {
       }catch(e){
         return {
           ok:false,
-          error:e.message()
+          error:"UPDATE ROOM ERROR"
         }
       }
     }),

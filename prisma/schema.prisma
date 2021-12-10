@@ -34,11 +34,9 @@ model Reservation {
   id     Int    @id @default(autoincrement())
   user   User   @relation(fields: [userId], references: [id]) //예약자
   userId Int
-  date   String
-  start  Int //시작하는 교시 
-  finish Int //끝나는 교시
-  room  Room @relation(fields: [roomId], references:[id], onDelete:Cascade) //roomNumber
+  room  Room @relation(fields: [roomId], references:[id], onDelete:Cascade)
   roomId Int
+  schedule Schedule[]
   group  User[] @relation(name: "reservation") //동반자 group
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -46,27 +44,34 @@ model Reservation {
 
 model Room {
   id           Int     @id @default(autoincrement())
+  major        Major
   roomNumber   Int
-  roomPassword String?
   description  String
   open         String?
   closed       String?
-  major        Major
-  reservation  Reservation[]
-  classes      Class[]
+  reservation  Reservation?
+  schedules    Schedule[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([major,roomNumber])
+}
+
+model Schedule {
+  id         Int     @id @default(autoincrement())
+  year       String
+  month      String
+  date       String
+  start      String
+  finish     String
+  isReserved Boolean @default(false)
+  rooms      Room[]
+  reservation Reservation @relation(fields: [reservationId], references:[id])
+  reservationId Int
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
 
-model Class {
-  id         Int     @id @default(autoincrement())
-  name       Int
-  isReserved Boolean @default(false)
-  room       Room    @relation(fields: [roomId], references: [id], onDelete:Cascade)
-  roomId     Int
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-}
 
 enum Campus {
   Seoul

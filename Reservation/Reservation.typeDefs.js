@@ -4,10 +4,8 @@ export default gql`
   type Reservation {
     id: Int!
     user: User!
-    date: String!
-    start: Int!
-    finish: Int!
-    room: Room
+    room: Room!
+    schedule: Schedule!
     group: [User]
     createdAt: String!
     updatedAt: String!
