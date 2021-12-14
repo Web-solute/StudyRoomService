@@ -3,11 +3,13 @@
 
 generator client {
   provider = "prisma-client-js"
+  
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+
 }
 
 model User {
@@ -32,6 +34,7 @@ model User {
 
 model Reservation {
   id     Int    @id @default(autoincrement())
+  reserveNum  String
   user   User   @relation(fields: [userId], references: [id]) //예약자
   userId Int
   room  Room @relation(fields: [roomId], references:[id], onDelete:Cascade)
@@ -49,7 +52,7 @@ model Room {
   description  String
   open         String?
   closed       String?
-  reservation  Reservation?
+  reservation  Reservation[]
   schedules    Schedule[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -64,11 +67,13 @@ model Schedule {
   date       String
   start      String
   finish     String
+  class      String
   isReserved Boolean @default(false)
   rooms      Room[]
   reservation Reservation[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+
 }
 
 

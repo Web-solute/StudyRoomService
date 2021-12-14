@@ -13,10 +13,11 @@ export default {
         where:{
           name:{
             startsWith:keyword
-          }
+          },
+          major:loggedInUser.major
         }
       });
     })
   }
 };
-//검색한 단어로 시작하는 이름 검색하기
+//검색한 단어로 시작하는 이름 검색하기 (같은 학과 사람)

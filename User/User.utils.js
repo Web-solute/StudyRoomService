@@ -33,9 +33,7 @@ export const protectedResolver =
       }
     }
     return ourResolver(root, args, context, info);
-  };
-
-
+};
 
 
 export const generateSecret = () => {

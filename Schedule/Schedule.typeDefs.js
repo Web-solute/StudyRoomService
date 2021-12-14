@@ -8,6 +8,7 @@ export default gql`
     date: String!
     start: String!
     finish: String!
+    class: String!
     isReserved: Boolean!
     room: [Room]
     reservation: [Reservation]
