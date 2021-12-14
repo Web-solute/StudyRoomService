@@ -10,9 +10,7 @@ export default gql`
     reserveRoom(
       major: Major!
       roomNumber: Int!
-      start: Int
-      finish: Int
-      mem: [String]
+      classes: [Int]
     ): reserveRoomResult!
   }
 `;

@@ -8,7 +8,7 @@ export default gql`
     description: String!
     open: String
     closed: String
-    reservation: Reservation
+    reservation: [Reservation]
     schedules: [Schedule]
     createdAt: String!
     updatedAt: String!

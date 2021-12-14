@@ -1,9 +1,9 @@
 import client from "../client";
 
 export default {
-    Reservation:{
-        schedule:({id})=> client.schedule.findMany({where:{
-            reservation:{
+    Schedule:{
+        reservation:({id})=> client.reservation.findMany({where:{
+            schedule:{
                 some:{
                     id
                 }

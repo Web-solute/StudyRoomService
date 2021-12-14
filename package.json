@@ -45,7 +45,7 @@
     "@babel/node": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
     "nodemon": "^2.0.14",
-    "prisma": "^3.4.0"
+    "prisma": "^3.3.0"
   },
   "resolutions": {
     "fs-capacitor": "^6.2.0",

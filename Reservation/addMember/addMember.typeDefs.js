@@ -1,11 +1,11 @@
 import {gql} from "apollo-server";
 
 export default gql`
-    type CreateScheduleResult {
+    type AddMemberResult {
         ok:Boolean!
         error:String
     }
     type Mutation {
-        createSchedule:CreateScheduleResult
+        addMember(reservationId: Int!, group: [String]): AddMemberResult!
     }
 `;

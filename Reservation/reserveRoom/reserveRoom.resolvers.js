@@ -1,10 +1,13 @@
 import client from "../../client";
+import { CLASS } from "../../constant";
 import { protectedResolver } from "../../User/User.utils";
 
 export default {
   Mutation: {
     reserveRoom: protectedResolver(async (_, args, { loggedInUser }) => {
-      const { major, roomNumber, start, finish, mem } = args;
+      //당일 예약 알고리즘
+      //연속 예약 관련 부분은 프론트에서 짤지? --> 일단 두시간 이상은 예약 불가
+      const { major, roomNumber, classes } = args;
       if (!loggedInUser.isValid) {
         return {
           ok: false,
@@ -18,12 +21,103 @@ export default {
             roomNumber
           }
         },
+        include:{
+          schedules:true
+        }
       });
       if (!reserveroom) {
         return {
           ok: false,
           error: "존재하지 않는 방입니다.",
         };
+      }
+      if(loggedInUser.major != reserveroom.major){
+        return {
+          ok:false,
+          error:"본인 학과의 세미나실만 예약하실수 있습니다!"
+        }
+      }
+      if((classes[classes.length-1]-classes[0])>3){
+        return {
+          ok:false,
+          error:"최대 2시간까지만 예약 가능합니다!"
+        }
+      }
+      const TODAY = new Date();
+      const year = String(TODAY.getFullYear());
+      const month = String(TODAY.getMonth()+1);
+      // (TODAY.getMonth()+1 >= 10 ? TODAY.getMonth()+1 : `0${TODAY.getMonth()+1}`);
+      const date = String(TODAY.getDate());
+
+      const scheduleDates = await client.schedule.findMany({
+        where:{
+          AND:[
+            { year  },
+            { month },
+            { date  },
+            { rooms:{
+                some:{
+                  id:reserveroom.id
+                }
+              }
+            },
+          ]
+        }
+      });
+      
+      let schedules = []
+      for(const time of classes){
+        const temp = await client.schedule.findFirst({where:{class:String(time)}});
+        if(temp){
+          return {
+            ok:false,
+            error:"예약할 수 없는 시간이 있습니다!"
+          }
+        }
+        const myschedules = await client.schedule.create({
+          data:{
+            year,
+            month,
+            date,
+            start:CLASS[time-1],
+            finish: (time == CLASS.length ? CLASS[0] : CLASS[time] ),
+            class:String(time),
+            isReserved:true,
+            rooms:{
+              connect:{
+                id:reserveroom.id
+              }
+            }          
+          }
+        });
+        schedules.push(myschedules.id);
+      }
+      const myreservtion = await client.reservation.create({
+        data:{
+          roomId:reserveroom.id,
+          userId:loggedInUser.id,
+          reserveNum:`${Date.now()}${loggedInUser.id}${reserveroom.id}`
+        },
+        include:{
+          schedule:true
+        }
+      });
+      schedules.map(async (id)=>{
+        await client.reservation.update({
+          where:{
+            id:myreservtion.id
+          },
+          data:{
+            schedule:{
+              connect:{
+                id
+              }
+            }
+          }
+        })
+      });
+      return {
+        ok:true
       }
       
     }),
