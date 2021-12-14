@@ -1,4 +1,4 @@
-export const ROOM_UPDATED = "Room_Updated";
+export const ADD_MEMBER = "ADD_MEMBER";
 export const CLASS = [
                         "00:00","00:30",
                         "01:00","01:30",

@@ -13,6 +13,9 @@ export default {
         where: {
           id,
         },
+        include:{
+          schedules:true
+        }
       });
     }),
   },

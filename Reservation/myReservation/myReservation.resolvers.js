@@ -6,7 +6,14 @@ export default {
     myReservation: protectedResolver(async (_, __, { loggedInUser }) => {
       return await client.reservation.findMany({
         where: {
-          userId: loggedInUser.id,
+          OR:[
+            {userId: loggedInUser.id},
+            {group:{
+              some:{
+                id:loggedInUser.id
+              }
+            }}
+          ]
         },
       });
     }),

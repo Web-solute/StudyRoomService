@@ -1,4 +1,6 @@
 import client from "../../client";
+import { ADD_MEMBER } from "../../constant";
+import pubsub from "../../pubsub";
 import { protectedResolver } from "../../User/User.utils";
 
 export default {
@@ -16,7 +18,8 @@ export default {
                     id:reservationId
                 },
                 include:{
-                    group:true
+                    group:true,
+                    user:true
                 }
             });
             if(myReservation.userId != loggedInUser.id){
@@ -45,6 +48,7 @@ export default {
                     }
                 })
             });
+            pubsub.publish(ADD_MEMBER,{reservationAlarm:{...myReservation}})
             return {
                 ok: true
             }

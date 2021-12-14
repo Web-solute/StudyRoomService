@@ -6,9 +6,6 @@ import { ApolloServer } from "apollo-server-express";
 import { typeDefs, resolvers } from "./schema";
 import { getUser } from "./User/User.utils";
 import cors from "cors";
-import cron from "node-cron";
-import pubsub from "./pubsub";
-import { ROOM_UPDATED } from "./constant";
 
 const PORT = process.env.PORT;
 
@@ -51,10 +48,6 @@ apollo.applyMiddleware({ app });
 
 const httpServer = http.createServer(app);
 apollo.installSubscriptionHandlers(httpServer);
-
-cron.schedule('* * * * * *',function(){
-  pubsub.publish(ROOM_UPDATED,{roomUpdates:"OK"})
-});
 
 httpServer.listen(PORT,()=>{
   console.log(`Server is running on http://localhost:${PORT}/graphql`)
