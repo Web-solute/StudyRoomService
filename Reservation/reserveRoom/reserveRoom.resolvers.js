@@ -37,12 +37,19 @@ export default {
           error:"본인 학과의 세미나실만 예약하실수 있습니다!"
         }
       }
+      // if(classes.length ==3)
+      /*
+      classes.length ==2
+      classes.length ==1
+       */
       if((classes[classes.length-1]-classes[0])>3){
         return {
           ok:false,
           error:"최대 2시간까지만 예약 가능합니다!"
         }
       }
+      //4,7 이거댐
+      // 띄엄띄엄 안대야함 한번에 하나의 타임이고 연속적이어야함 (1,2,3) O {(1,3) X} ==> O
       const TODAY = new Date();
       const year = String(TODAY.getFullYear());
       const month = String(TODAY.getMonth()+1);
@@ -64,9 +71,10 @@ export default {
           ]
         }
       });
-      
       let schedules = []
       for(const time of classes){
+        //[1,2,3]
+        //classes의 값들이 scheduleDates안에 포함되는가?
         const temp = await client.schedule.findFirst({where:{class:String(time)}});
         if(temp){
           return {
@@ -74,6 +82,7 @@ export default {
             error:"예약할 수 없는 시간이 있습니다!"
           }
         }
+        //class 하나당 스케쥴 하나 생성
         const myschedules = await client.schedule.create({
           data:{
             year,

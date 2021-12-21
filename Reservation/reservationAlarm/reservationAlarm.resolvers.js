@@ -11,15 +11,11 @@ export default {
                 //user가 reservation에 참여했는지 확인
                 const reservation = await client.reservation.findFirst({
                     where:{
-                        id:args.id,
-                        group:{
-                            some:{
-                                id:context.loggedInUser.id
-                            }
-                        }
+                        id:args.id
                     }
                 });
-                if(!reservation){
+                const user = await client.user.findUnique({where:{id:context.loggedInUser.id}})
+                if(!reservation || !user){
                     throw new Error("실시간 감지 실패")
                 }
                 return withFilter(
