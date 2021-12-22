@@ -3,7 +3,6 @@ import { gql } from "apollo-server";
 export default gql`
   type reserveRoomResult {
     ok: Boolean!
-    id: Int
     error: String
   }
 
@@ -11,7 +10,8 @@ export default gql`
     reserveRoom(
       major: Major!
       roomNumber: Int!
-      classes: [Int]
+      start: String!
+      finish: String!
     ): reserveRoomResult!
   }
 `;

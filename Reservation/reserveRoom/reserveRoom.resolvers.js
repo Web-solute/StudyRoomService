@@ -7,7 +7,7 @@ export default {
     reserveRoom: protectedResolver(async (_, args, { loggedInUser }) => {
       //당일 예약 알고리즘
       //연속 예약 관련 부분은 프론트에서 짤지? --> 일단 두시간 이상은 예약 불가
-      const { major, roomNumber, classes } = args;
+      const { major, roomNumber, start, finish } = args;
       if (!loggedInUser.isValid) {
         return {
           ok: false,
@@ -37,6 +37,15 @@ export default {
           error: "본인 학과의 세미나실만 예약하실수 있습니다!",
         };
       }
+      let classes = [];
+      let c_start = CLASS.findIndex((e) => e == start);
+      c_start += 1;
+      let c_finish = CLASS.findIndex((e) => e == finish);
+      c_finish += 1;
+      while (c_start != c_finish) {
+        classes.push(c_start);
+        c_start += 1;
+      }
 
       if (classes[classes.length - 1] - classes[0] > 3) {
         return {
@@ -51,8 +60,6 @@ export default {
       const month = String(TODAY.getMonth() + 1);
       // (TODAY.getMonth()+1 >= 10 ? TODAY.getMonth()+1 : `0${TODAY.getMonth()+1}`);
       const date = String(TODAY.getDate());
-
-      let schedules = [];
 
       for (const time of classes) {
         //[1,2,3]
@@ -135,8 +142,8 @@ export default {
         });
       }
       return {
-        ok:true,
-        id:myreservtion.id
+        ok: true,
+        id: myreservtion.id,
       };
     }),
   },
