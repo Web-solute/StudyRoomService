@@ -61,7 +61,7 @@ export default {
       for (const time of classes) {
         //[1,2,3]
         //classes의 값들이 scheduleDates안에 포함되는가?
-        const scheduleTime = await client.schedule.findMany({
+        const scheduleTime = await client.schedule.findFirst({
           where: {
             AND: [
               { class: String(time) },
@@ -78,13 +78,13 @@ export default {
             ],
           },
         });
-        if (scheduleTime.length != 0) {
+        if (scheduleTime) {
           return {
             ok: false,
             error: "중복되는 시간에 예약 내역이 있습니다.",
           };
         }
-        const scheduleDates = await client.schedule.findMany({
+        const scheduleDates = await client.schedule.findFirst({
           where: {
             AND: [
               { class: String(time) },
@@ -101,7 +101,7 @@ export default {
             ],
           },
         });
-        if (scheduleDates.length != 0) {
+        if (scheduleDates) {
           return {
             ok: false,
             error: "예약할 수 없는 시간이 있습니다!",
