@@ -68,13 +68,7 @@ export default {
               { year },
               { month },
               { date },
-              {
-                reservation: {
-                  some: {
-                    user: loggedInUser,
-                  },
-                },
-              },
+              { userId: loggedInUser.id },
             ],
           },
         });
@@ -107,25 +101,7 @@ export default {
             error: "예약할 수 없는 시간이 있습니다!",
           };
         }
-
         //class 하나당 스케쥴 하나 생성
-        const myschedules = await client.schedule.create({
-          data: {
-            year,
-            month,
-            date,
-            start: CLASS[time - 1],
-            finish: time == CLASS.length ? CLASS[0] : CLASS[time],
-            class: String(time),
-            isReserved: true,
-            rooms: {
-              connect: {
-                id: reserveroom.id,
-              },
-            },
-          },
-        });
-        schedules.push(myschedules.id);
       }
       const myreservtion = await client.reservation.create({
         data: {
@@ -137,20 +113,31 @@ export default {
           schedule: true,
         },
       });
-      schedules.map(async (id) => {
-        await client.reservation.update({
-          where: {
-            id: myreservtion.id,
-          },
+
+      for (const time of classes) {
+        const myschedules = await client.schedule.create({
           data: {
-            schedule: {
+            year,
+            month,
+            date,
+            userId: loggedInUser.id,
+            start: CLASS[time - 1],
+            finish: time == CLASS.length ? CLASS[0] : CLASS[time],
+            class: String(time),
+            reservation: {
               connect: {
-                id,
+                id: myreservtion.id,
+              },
+            },
+            isReserved: true,
+            rooms: {
+              connect: {
+                id: reserveroom.id,
               },
             },
           },
         });
-      });
+      }
       return {
         ok: true,
       };

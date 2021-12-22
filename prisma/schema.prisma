@@ -69,8 +69,10 @@ model Schedule {
   finish     String
   class      String
   isReserved Boolean @default(false)
+  userId     Int
   rooms      Room[]
-  reservation Reservation[]
+  reservation Reservation @relation(fields: [reserveId], references:[id], onDelete:Cascade) 
+  reserveId  Int
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 
