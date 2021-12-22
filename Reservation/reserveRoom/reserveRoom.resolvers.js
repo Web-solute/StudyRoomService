@@ -15,15 +15,15 @@ export default {
         };
       }
       const reserveroom = await client.room.findUnique({
-        where: { 
-          major_roomNumber:{
+        where: {
+          major_roomNumber: {
             major,
-            roomNumber
-          }
+            roomNumber,
+          },
         },
-        include:{
-          schedules:true
-        }
+        include: {
+          schedules: true,
+        },
       });
       if (!reserveroom) {
         return {
@@ -31,104 +31,129 @@ export default {
           error: "존재하지 않는 방입니다.",
         };
       }
-      if(loggedInUser.major != reserveroom.major){
+      if (loggedInUser.major != reserveroom.major) {
         return {
-          ok:false,
-          error:"본인 학과의 세미나실만 예약하실수 있습니다!"
-        }
+          ok: false,
+          error: "본인 학과의 세미나실만 예약하실수 있습니다!",
+        };
       }
       // if(classes.length ==3)
       /*
       classes.length ==2
       classes.length ==1
        */
-      if((classes[classes.length-1]-classes[0])>3){
+      if (classes[classes.length - 1] - classes[0] > 3) {
         return {
-          ok:false,
-          error:"최대 2시간까지만 예약 가능합니다!"
-        }
+          ok: false,
+          error: "최대 2시간까지만 예약 가능합니다!",
+        };
       }
       //4,7 이거댐
       // 띄엄띄엄 안대야함 한번에 하나의 타임이고 연속적이어야함 (1,2,3) O {(1,3) X} ==> O
       const TODAY = new Date();
       const year = String(TODAY.getFullYear());
-      const month = String(TODAY.getMonth()+1);
+      const month = String(TODAY.getMonth() + 1);
       // (TODAY.getMonth()+1 >= 10 ? TODAY.getMonth()+1 : `0${TODAY.getMonth()+1}`);
       const date = String(TODAY.getDate());
 
-      const scheduleDates = await client.schedule.findMany({
-        where:{
-          AND:[
-            { year  },
-            { month },
-            { date  },
-            { rooms:{
-                some:{
-                  id:reserveroom.id
-                }
-              }
-            },
-          ]
-        }
-      });
-      let schedules = []
-      for(const time of classes){
+      let schedules = [];
+
+      for (const time of classes) {
         //[1,2,3]
         //classes의 값들이 scheduleDates안에 포함되는가?
-        const temp = await client.schedule.findFirst({where:{class:String(time)}});
-        if(temp){
+        const scheduleTime = await client.schedule.findMany({
+          where: {
+            AND: [
+              { class: String(time) },
+              { year },
+              { month },
+              { date },
+              {
+                reservation: {
+                  some: {
+                    user: loggedInUser,
+                  },
+                },
+              },
+            ],
+          },
+        });
+        if (scheduleTime.length != 0) {
           return {
-            ok:false,
-            error:"예약할 수 없는 시간이 있습니다!"
-          }
+            ok: false,
+            error: "중복되는 시간에 예약 내역이 있습니다.",
+          };
         }
+        const scheduleDates = await client.schedule.findMany({
+          where: {
+            AND: [
+              { class: String(time) },
+              { year },
+              { month },
+              { date },
+              {
+                rooms: {
+                  some: {
+                    id: reserveroom.id,
+                  },
+                },
+              },
+            ],
+          },
+        });
+        if (scheduleDates.length != 0) {
+          return {
+            ok: false,
+            error: "예약할 수 없는 시간이 있습니다!",
+          };
+        }
+
         //class 하나당 스케쥴 하나 생성
         const myschedules = await client.schedule.create({
-          data:{
+          data: {
             year,
             month,
             date,
-            start:CLASS[time-1],
-            finish: (time == CLASS.length ? CLASS[0] : CLASS[time] ),
-            class:String(time),
-            isReserved:true,
-            rooms:{
-              connect:{
-                id:reserveroom.id
-              }
-            }          
-          }
+            start: CLASS[time - 1],
+            finish: time == CLASS.length ? CLASS[0] : CLASS[time],
+            class: String(time),
+            isReserved: true,
+            rooms: {
+              connect: {
+                id: reserveroom.id,
+              },
+            },
+          },
         });
         schedules.push(myschedules.id);
       }
       const myreservtion = await client.reservation.create({
-        data:{
-          roomId:reserveroom.id,
-          userId:loggedInUser.id,
-          reserveNum:`${Date.now()}${loggedInUser.id}${reserveroom.id}`
+        data: {
+          roomId: reserveroom.id,
+          userId: loggedInUser.id,
+          reserveNum: `${Date.now()}${loggedInUser.id}${reserveroom.id}`,
         },
-        include:{
-          schedule:true
-        }
+        include: {
+          schedule: true,
+        },
       });
-      schedules.map(async (id)=>{
+      schedules.map(async (id) => {
         await client.reservation.update({
-          where:{
-            id:myreservtion.id
+          where: {
+            id: myreservtion.id,
           },
-          data:{
-            schedule:{
-              connect:{
-                id
-              }
-            }
-          }
-        })
+          data: {
+            schedule: {
+              connect: {
+                id,
+              },
+            },
+          },
+        });
       });
       return {
-        ok:true
-      }
-      
+        ok: true,
+      };
     }),
   },
 };
