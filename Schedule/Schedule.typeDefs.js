@@ -8,6 +8,8 @@ export default gql`
     date: String!
     start: String!
     finish: String!
+    userId: Int!
+    reserveId: Int!
     class: String!
     isReserved: Boolean!
     room: [Room]
@@ -15,5 +17,4 @@ export default gql`
     createdAt: String!
     updatedAt: String!
   }
-
 `;
