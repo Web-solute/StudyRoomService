@@ -37,11 +37,7 @@ export default {
           error: "본인 학과의 세미나실만 예약하실수 있습니다!",
         };
       }
-      // if(classes.length ==3)
-      /*
-      classes.length ==2
-      classes.length ==1
-       */
+
       if (classes[classes.length - 1] - classes[0] > 3) {
         return {
           ok: false,
@@ -139,7 +135,8 @@ export default {
         });
       }
       return {
-        ok: true,
+        ok:true,
+        id:myreservtion.id
       };
     }),
   },
