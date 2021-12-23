@@ -7,7 +7,7 @@ export default {
     reserveRoom: protectedResolver(async (_, args, { loggedInUser }) => {
       //당일 예약 알고리즘
       //연속 예약 관련 부분은 프론트에서 짤지? --> 일단 두시간 이상은 예약 불가
-      const { major, roomNumber, start, finish } = args;
+      const { id, start, finish } = args;
       try{
         if (!loggedInUser.isValid) {
           return {
@@ -17,10 +17,7 @@ export default {
         }
         const reserveroom = await client.room.findUnique({
           where: {
-            major_roomNumber: {
-              major,
-              roomNumber,
-            },
+            id,
           },
           include: {
             schedules: true,
