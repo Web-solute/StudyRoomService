@@ -8,13 +8,13 @@ export default {
         return null;
       }
       if(roomId){
-        return await client.reservation.findMany({
+        return client.reservation.findMany({
           where: {
             roomId,
           },
         });
       }
-      return await client.reservation.findMany();
+      return client.reservation.findMany();
     }),
   },
 };

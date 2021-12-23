@@ -8,7 +8,7 @@ export default {
       if(!loggedInUser.id){
         return null;
       }
-      return await client.room.findMany({orderBy:{createdAt:'asc'}});
+      return client.room.findMany({orderBy:{createdAt:'asc'}});
     }),
   },
 };

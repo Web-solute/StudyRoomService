@@ -4,7 +4,7 @@ import { protectedResolver } from "../../User/User.utils";
 export default {
   Query: {
     myReservation: protectedResolver(async (_, __, { loggedInUser }) => {
-      return await client.reservation.findMany({
+      return client.reservation.findMany({
         where: {
           OR:[
             {userId: loggedInUser.id},
