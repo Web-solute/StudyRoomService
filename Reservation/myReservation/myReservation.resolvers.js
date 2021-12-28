@@ -15,6 +15,11 @@ export default {
             }}
           ]
         },
+        include:{
+          schedule:true,
+          room:true,
+          group:true
+        }
       });
     }),
   },
