@@ -6,6 +6,6 @@ export default gql`
     error: String
   }
   type Mutation {
-    changePassword(email:String!):changePasswordResult
+    changePassword(studentId:String!):changePasswordResult
   }
 `;
