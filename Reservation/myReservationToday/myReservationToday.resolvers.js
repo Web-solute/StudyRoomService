@@ -19,7 +19,6 @@ export default {
             }
         }); 
         const scheduleId = schedules.map((schedule)=>(schedule.id));
-        
         return client.reservation.findMany({
           where: {
             OR:[
