@@ -4,9 +4,9 @@ import { protectedResolver } from "../../User/User.utils";
 export default {
   Mutation: {
     allFalseQR: protectedResolver(async (_, {qr}, { loggedInUser }) => {
-        const update = await client.qRModel.updateMany({
+        const update = await client.user.updateMany({
             data:{
-                activate:false
+                activation:false
             }
         });
         if(!update){

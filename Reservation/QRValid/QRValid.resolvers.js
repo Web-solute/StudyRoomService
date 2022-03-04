@@ -43,7 +43,6 @@ export default {
         const QRLen = (await client.qRModel.findMany()).length
         const randomNum = Math.floor(Math.random() * QRLen +1);
         const QR = await client.qRModel.findUnique({where:{id:randomNum}});
-        console.log(randomNum);
         return QR;
       }
       else {

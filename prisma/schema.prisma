@@ -15,7 +15,6 @@ datasource db {
 model QRModel {
   id Int    @id @default(autoincrement())
   qr String @unique()
-  activate Boolean @default(false)
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
 }
@@ -31,6 +30,7 @@ model User {
   campus    Campus
   isValid      Boolean       @default(false)
   isManaged    Boolean       @default(false)
+  activation Boolean @default(false)
   reservations Reservation[]
   member       Reservation[] @relation(name: "reservation") //동반자인 경우 예약
   createdAt    DateTime      @default(now())
