@@ -4,28 +4,21 @@ import { protectedResolver } from "../../User/User.utils";
 export default {
   Mutation: {
     falseQR: protectedResolver(async (_, {qr}, { loggedInUser }) => {
-        const QR = await client.qRModel.findUnique({
+        const update = await client.qRModel.update({
             where:{
                 qr
+            },
+            data:{
+                activate:false
             }
-        })
-        if(QR){
-            await client.user.update({
-                where:{
-                    id:loggedInUser.id
-                },
-                data:{
-                    activation:false
-                }
-            });
+        });
+        if(!update){
             return {
-                ok: true
+                ok: false
             }
         }
-      
         return {
-            ok: false,
-            error:"NO QR"
+            ok: true
         }
     }),
   },

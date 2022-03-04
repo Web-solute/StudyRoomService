@@ -40,9 +40,11 @@ export default {
       })
 
       if(verified.length > 0){
-        const QRLen = (await client.qRModel.findMany()).length
+        const validQR = await client.qRModel.findMany({where:{activate:false}});
+        const QRLen = validQR.length;
         const randomNum = Math.floor(Math.random() * QRLen +1);
-        const QR = await client.qRModel.findUnique({where:{id:randomNum}});
+        const QR = validQR[randomNum];
+        
         return QR;
       }
       else {
