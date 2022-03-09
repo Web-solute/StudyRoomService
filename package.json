@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
-    "dev": "nodemon --exec babel-node server",
+    "dev": "nodemon --exec babel-node src/server --delay 2",
     "migrate": "npx prisma migrate dev -- preview-feature",
-    "studio": "npx prisma studio"
+    "studio": "npx prisma studio",
+    "build": "babel src --out-dir build",
+    "start": "node build/server"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,7 @@
   "homepage": "https://github.com/dev-jiseok/StudyRoomService#readme",
   "dependencies": {
     "@babel/cli": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.17.0",
     "@prisma/client": "^3.3.0",
     "apollo-server": "^3.4.0",
     "apollo-server-express": "^2.25.2",
